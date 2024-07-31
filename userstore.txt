@@ -1,0 +1,4 @@
+remy@gmail.com,e525ce0f-8d11-43f6-9660-889d1932bb46,PATIENT
+dukundane@gmail.com,b577528b-884f-43fb-8033-6f9977116774,PATIENT,Dukundane,Remy,2002-02-02,no,no,RWA,,,e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+pacifique@gmail.com,178c96d6-bb9c-4edb-9343-554e1cd4fee9,PATIENT
+hirwa@gmail.com,a8411853-9ba5-41c4-9b76-e9cc00647403,PATIENT

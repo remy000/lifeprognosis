@@ -1,18 +1,22 @@
 import java.time.LocalDate;
 
 public class Patient extends User {
-    private LocalDate dateOfBirth;
-    private boolean hivInfected;
-    private LocalDate diagnosisDate;
-    private boolean artDrugs;
-    private LocalDate startDate;
+    private String dateOfBirth;
+    private String hivInfected;
+    private String diagnosisDate;
+    private String artDrugs;
+    private String startDate;
     private String countryIso;
+
+    public Patient() {
+    }
 
     public Patient(String firstName, String lastName, String email, String password, String role) {
         super(firstName, lastName, email, password, role);
     }
 
-    public Patient(LocalDate dateOfBirth, boolean hivInfected, LocalDate diagnosisDate, boolean artDrugs, LocalDate startDate, String countryIso) {
+    public Patient(String firstName, String lastName, String email, String password, String role, String dateOfBirth, String hivInfected, String diagnosisDate, String artDrugs, String startDate, String countryIso) {
+        super(firstName, lastName, email, password, role);
         this.dateOfBirth = dateOfBirth;
         this.hivInfected = hivInfected;
         this.diagnosisDate = diagnosisDate;
@@ -21,43 +25,43 @@ public class Patient extends User {
         this.countryIso = countryIso;
     }
 
-    public LocalDate getDateOfBirth() {
+    public String getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(LocalDate dateOfBirth) {
+    public void setDateOfBirth(String dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
-    public boolean isHivInfected() {
+    public String getHivInfected() {
         return hivInfected;
     }
 
-    public void setHivInfected(boolean hivInfected) {
+    public void setHivInfected(String hivInfected) {
         this.hivInfected = hivInfected;
     }
 
-    public LocalDate getDiagnosisDate() {
+    public String getDiagnosisDate() {
         return diagnosisDate;
     }
 
-    public void setDiagnosisDate(LocalDate diagnosisDate) {
+    public void setDiagnosisDate(String diagnosisDate) {
         this.diagnosisDate = diagnosisDate;
     }
 
-    public boolean isArtDrugs() {
+    public String getArtDrugs() {
         return artDrugs;
     }
 
-    public void setArtDrugs(boolean artDrugs) {
+    public void setArtDrugs(String artDrugs) {
         this.artDrugs = artDrugs;
     }
 
-    public LocalDate getStartDate() {
+    public String getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(LocalDate startDate) {
+    public void setStartDate(String startDate) {
         this.startDate = startDate;
     }
 

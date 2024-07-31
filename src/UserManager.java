@@ -1,26 +1,130 @@
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class UserManager {
-    private List<User>users=new ArrayList<>();
 
-    public UserManager() {
-    }
-
-    public UserManager(List<User> users) {
-        this.users = users;
+    public static void initiateRegistration(String email) throws Exception {
+         executeBashCommand("bash","src/user_manager.sh", "initiateRegistration", email);
     }
 
-    public void register(User user){
-        users.add(user);
+    public static  void completeRegistration(String uuid,Patient patient) throws Exception {
+         executeBashCommand("bash","src/user_manager.sh", "completeRegistration",uuid, patient.getFirstName(), patient.getLastName(), patient.getDateOfBirth(),
+                patient.getHivInfected(), patient.getDiagnosisDate(), patient.getArtDrugs(), patient.getStartDate(), patient.getCountryIso(), patient.getPassword());
     }
-    public User login(String email, String password){
-       for (User user:users){
-           if(user.getEmail().equals(email)&&user.getPassword().equals(password)){
-               return user;
-           }
-       }
-       return null;
+    public static String login(String email, String password) throws Exception {
+       return executeBashCommand("./user_manager.sh", "login", email, password);
     }
-    public void main()
+
+    private static String executeBashCommand(String... args) throws Exception {
+        ProcessBuilder pb = new ProcessBuilder(args);
+        pb.redirectErrorStream(true); // Merge error stream with standard output
+        Process process = pb.start();
+
+        StringBuilder output = new StringBuilder();
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                output.append(line).append("\n");
+            }
+        }
+
+        process.waitFor();
+        System.out.println(output.toString());
+        return output.toString();
+    }
+
+
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        boolean running = true;
+        while (running) {
+            System.out.println("WELCOME TO PATIENT PROGNOSIS");
+            System.out.println("\n============================\n\n");
+            System.out.println("Choose an option: ");
+            System.out.println("1. Initiate Registration");
+            System.out.println("2. Complete Registration");
+            System.out.println("3. Login");
+
+            int choice = scanner.nextInt();
+            scanner.nextLine();
+
+            try {
+                switch (choice) {
+                    case 1:
+                        System.out.print("Enter user email: ");
+                        String email = scanner.nextLine();
+                        initiateRegistration(email);
+                        break;
+                    case 2:
+                        System.out.print("Enter UUID: ");
+                        String uuid = scanner.nextLine();
+                        System.out.print("First Name: ");
+                        String firstName = scanner.nextLine();
+                        System.out.print("Last Name: ");
+                        String lastName = scanner.nextLine();
+                        System.out.print("Date of Birth (YYYY-MM-DD): ");
+                        String dateOfBirth = scanner.nextLine();
+                        System.out.print("HIV Positive (yes/no): ");
+                        String hivPositive = scanner.nextLine();
+                        String diagnosisDate = "", onArtDrugs = "no", artStartDate = "";
+                        if (hivPositive.equalsIgnoreCase("yes")) {
+                            System.out.print("Diagnosis Date (YYYY-MM-DD): ");
+                            diagnosisDate = scanner.nextLine();
+                            System.out.print("On ART Drugs (yes/no): ");
+                            onArtDrugs = scanner.nextLine();
+                            if (onArtDrugs.equalsIgnoreCase("yes")) {
+                                System.out.print("ART Start Date (YYYY-MM-DD): ");
+                                artStartDate = scanner.nextLine();
+                            }
+                        }
+                        System.out.print("Country of Residence (ISO Code): ");
+                        String countryIso = scanner.nextLine();
+                        System.out.print("Password: ");
+                        String password = scanner.nextLine();
+                        Patient patient = new Patient();
+                        patient.setFirstName(firstName);
+                        patient.setLastName(lastName);
+                        patient.setDateOfBirth(dateOfBirth);
+                        patient.setHivInfected(hivPositive);
+                        patient.setDiagnosisDate(diagnosisDate);
+                        patient.setArtDrugs(onArtDrugs);
+                        patient.setStartDate(artStartDate);
+                        patient.setCountryIso(countryIso);
+                        patient.setPassword(password);
+                        completeRegistration(uuid, patient);
+                        break;
+                    case 3:
+                        System.out.print("Enter email: ");
+                        String loginEmail = scanner.nextLine();
+                        System.out.print("Enter password: ");
+                        String loginPassword = scanner.nextLine();
+                        String result = login(loginEmail, loginPassword);
+                        if (result.contains("Login successful")) {
+                            String userData = result.split("\n")[1];
+                            System.out.println("Login successful. User data: " + userData);
+                        } else {
+                            System.out.println(result);
+                        }
+                        break;
+                    case 4:
+                        System.out.println("Exiting the program...");
+                        running = false;
+                        break;
+                    default:
+                        System.out.println("Invalid choice. Please try again.");
+                        break;
+
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+            scanner.close();
+        }
+
 }

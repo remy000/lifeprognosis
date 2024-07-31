@@ -15,7 +15,7 @@ public class UserManager {
                 patient.getHivInfected(), patient.getDiagnosisDate(), patient.getArtDrugs(), patient.getStartDate(), patient.getCountryIso(), patient.getPassword());
     }
     public static String login(String email, String password) throws Exception {
-       return executeBashCommand("./user_manager.sh", "login", email, password);
+       return executeBashCommand("bash","src/user_manager.sh", "login", email, password);
     }
 
     private static String executeBashCommand(String... args) throws Exception {
@@ -35,8 +35,6 @@ public class UserManager {
         System.out.println(output.toString());
         return output.toString();
     }
-
-
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);

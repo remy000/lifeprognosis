@@ -12,10 +12,11 @@ public class UserManager {
 
     public static  void completeRegistration(String uuid,Patient patient) throws Exception {
          executeBashCommand("bash","src/user_manager.sh", "completeRegistration",uuid, patient.getFirstName(), patient.getLastName(), patient.getDateOfBirth(),
-                patient.getHivInfected(), patient.getDiagnosisDate(), patient.getArtDrugs(), patient.getStartDate(), patient.getCountryIso(), patient.getPassword());
+                patient.getHivInfected(),patient.getArtDrugs(),patient.getCountryIso(),patient.getPassword(), patient.getDiagnosisDate(),patient.getStartDate()) ;
+
     }
-    public static String login(String email, String password) throws Exception {
-       return executeBashCommand("bash","src/user_manager.sh", "login", email, password);
+    public static void login(String email, String password) throws Exception {
+        executeBashCommand("bash","src/user_manager.sh", "login", email, password);
     }
 
     private static String executeBashCommand(String... args) throws Exception {
@@ -79,10 +80,12 @@ public class UserManager {
                                 artStartDate = scanner.nextLine();
                             }
                         }
+
+
                         System.out.print("Country of Residence (ISO Code): ");
                         String countryIso = scanner.nextLine();
                         System.out.print("Password: ");
-                        String password = scanner.nextLine();
+                        String password = scanner.next();
                         Patient patient = new Patient();
                         patient.setFirstName(firstName);
                         patient.setLastName(lastName);
@@ -100,13 +103,8 @@ public class UserManager {
                         String loginEmail = scanner.nextLine();
                         System.out.print("Enter password: ");
                         String loginPassword = scanner.nextLine();
-                        String result = login(loginEmail, loginPassword);
-                        if (result.contains("Login successful")) {
-                            String userData = result.split("\n")[1];
-                            System.out.println("Login successful. User data: " + userData);
-                        } else {
-                            System.out.println(result);
-                        }
+                        login(loginEmail, loginPassword);
+
                         break;
                     case 4:
                         System.out.println("Exiting the program...");

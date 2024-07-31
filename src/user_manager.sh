@@ -1,5 +1,5 @@
 #!/bin/bash
-USER_STORE="userstore.txt"
+USER_STORE="src/userstore.txt"
 function hashPassword() {
   echo -n "$1" | openssl dgst -sha256 | awk '{print $2}'
 }
@@ -8,7 +8,7 @@ function initiateRegistration() {
       uuid=$(uuidgen)
       role="PATIENT"
      echo "$email,$uuid,$role" >> $USER_STORE
-     echo "User initiation completed. UUID: $uuid"
+     echo "registration initiation completed. UUID: $uuid"
 }
 
 function completeRegistration() {
@@ -17,29 +17,43 @@ function completeRegistration() {
       local lastname="$3"
       local dateOfBirth="$4"
       local hivPositive="$5"
-      local diagnosisDate="$6"
-      local onArtDrugs="$7"
-      local artStartDate="$8"
-      local countryIso="$9"
-      local password="${10}"
-       hashedPassword=$(hashPassword "$password")
+       local onArtDrugs="$6"
+       local countryIso="$7"
+        local password="$8"
+      local diagnosisDate="$9"
+      local artStartDate="${10}"
+
+      echo "UUID: $uuid"
+          echo "First Name: $firstname"
+          echo "Last Name: $lastname"
+          echo "Date of Birth: $dateOfBirth"
+          echo "HIV Positive: $hivPositive"
+          echo "Diagnosis Date: $diagnosisDate"
+          echo "On ART Drugs: $onArtDrugs"
+          echo "ART Start Date: $artStartDate"
+          echo "Country ISO: $countryIso"
+          echo "Password: $password"
+      hashedPassword=$(hashPassword "$password")
   if ! grep -q "$uuid" $USER_STORE; then
     echo "Invalid UUID"
     exit 1
   fi
-
-
    sed -i "/$uuid/s/$/,${firstname},${lastname},${dateOfBirth},${hivPositive},${diagnosisDate},${onArtDrugs},${artStartDate},${countryIso},${hashedPassword}/" $USER_STORE
    echo "registration completed."
+   echo "Hashed password during registration: $hashedPassword"
+    echo "$password"
+
+
 }
 function login(){
   local email="$1"
       local password="$2"
+
        hashedPassword=$(hashPassword "$password")
 
       if grep -q "$email" $USER_STORE; then
           userData=$(grep "$email" $USER_STORE)
-          storedPassword=$(echo "$userData" | cut -d, -f11)
+          storedPassword=$(echo "$userData" | cut -d, -f12)
           if [[ "$hashedPassword" == "$storedPassword" ]]; then
               echo "Login successful,${userData}"
           else

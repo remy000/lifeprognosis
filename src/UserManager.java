@@ -5,23 +5,28 @@ import java.util.List;
 import java.util.Scanner;
 
 public class UserManager {
-
+    //initiating registration
     public static void initiateRegistration(String email) throws Exception {
+        //calling bash to initiate registration
          executeBashCommand("bash","src/user_manager.sh", "initiateRegistration", email);
     }
-
+    // complete registration
     public static  void completeRegistration(String uuid,Patient patient) throws Exception {
+        //calling bash to complete registration for patient
          executeBashCommand("bash","src/user_manager.sh", "completeRegistration",uuid, patient.getFirstName(), patient.getLastName(), patient.getDateOfBirth(),
                 patient.getHivInfected(),patient.getArtDrugs(),patient.getCountryIso(),patient.getPassword(), patient.getDiagnosisDate(),patient.getStartDate()) ;
 
     }
+    //login
     public static void login(String email, String password) throws Exception {
+        //calling bash to login a user
         executeBashCommand("bash","src/user_manager.sh", "login", email, password);
     }
 
+    //function to execute commands for running bash
     private static String executeBashCommand(String... args) throws Exception {
         ProcessBuilder pb = new ProcessBuilder(args);
-        pb.redirectErrorStream(true); // Merge error stream with standard output
+        pb.redirectErrorStream(true);
         Process process = pb.start();
 
         StringBuilder output = new StringBuilder();
@@ -33,10 +38,11 @@ public class UserManager {
         }
 
         process.waitFor();
+        // returning the response from bash
         System.out.println(output.toString());
         return output.toString();
     }
-
+   //main
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         boolean running = true;
@@ -52,12 +58,15 @@ public class UserManager {
             scanner.nextLine();
 
             try {
+                //switch case for performing different functionalities
                 switch (choice) {
+                    //initiating registration
                     case 1:
                         System.out.print("Enter user email: ");
                         String email = scanner.nextLine();
                         initiateRegistration(email);
                         break;
+                        //completing registration
                     case 2:
                         System.out.print("Enter UUID: ");
                         String uuid = scanner.nextLine();
@@ -80,8 +89,6 @@ public class UserManager {
                                 artStartDate = scanner.nextLine();
                             }
                         }
-
-
                         System.out.print("Country of Residence (ISO Code): ");
                         String countryIso = scanner.nextLine();
                         System.out.print("Password: ");
@@ -98,6 +105,7 @@ public class UserManager {
                         patient.setPassword(password);
                         completeRegistration(uuid, patient);
                         break;
+                        //login
                     case 3:
                         System.out.print("Enter email: ");
                         String loginEmail = scanner.nextLine();

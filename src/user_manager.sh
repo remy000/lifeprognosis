@@ -22,17 +22,6 @@ function completeRegistration() {
         local password="$8"
       local diagnosisDate="$9"
       local artStartDate="${10}"
-
-      echo "UUID: $uuid"
-          echo "First Name: $firstname"
-          echo "Last Name: $lastname"
-          echo "Date of Birth: $dateOfBirth"
-          echo "HIV Positive: $hivPositive"
-          echo "Diagnosis Date: $diagnosisDate"
-          echo "On ART Drugs: $onArtDrugs"
-          echo "ART Start Date: $artStartDate"
-          echo "Country ISO: $countryIso"
-          echo "Password: $password"
       hashedPassword=$(hashPassword "$password")
   if ! grep -q "$uuid" $USER_STORE; then
     echo "Invalid UUID"

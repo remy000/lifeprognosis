@@ -51,6 +51,9 @@ function login(){
       fi
 
 }
+function downloadStore(){
+  echo "hello"
+}
 case $1 in
     "initiateRegistration")
         initiateRegistration $2
@@ -61,7 +64,10 @@ case $1 in
     "login")
         login $2 $3
         ;;
+    "downloadStore")
+              downloadStore "$2"
+              ;;
     *)
-        echo "Usage: $0 {initiateRegistration|completeRegistration|login}"
+        echo "Usage: $0 {initiateRegistration|completeRegistration|login|}"
         ;;
 esac

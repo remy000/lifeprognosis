@@ -22,6 +22,9 @@ public class UserManager {
         //calling bash to login a user
         return executeBashCommand("bash","src/user_manager.sh", "login", email, password);
     }
+    public static void downloadUserStore(String targetDirectoryPath) throws Exception {
+        executeBashCommand("bash", "src/user_manager.sh", "downloadStore", targetDirectoryPath);
+    }
 
     //function to execute commands for running bash
     private static String executeBashCommand(String... args) throws Exception {
@@ -64,13 +67,57 @@ public class UserManager {
                         initiateRegistration(email);
                         break;
                     case 2:
-                        System.out.println("Downloading...");
+                        String path="C:/Users/STUDENT/Downloads/projectfiles";
+                        downloadUserStore(path);
+
                         break;
                     case 3:
                         System.out.println("Existing...");
                         run = false;
                     default:
                         System.out.println("Invalid choice. Please try again.");
+                        break;
+                }
+
+
+            }catch(Exception ex){
+                ex.printStackTrace();
+            }
+        }
+
+    }
+
+    public static void patientHome(){
+        Scanner scan = new Scanner(System.in);
+        boolean run = true;
+        while (run) {
+            System.out.println("PATIENT HOMEPAGE");
+            System.out.println("\n============================\n");
+            System.out.println("Choose an option: ");
+            System.out.println("1. View Profile Data");
+            System.out.println("2. Update Profile Data");
+            System.out.println("3. Calculate Life");
+            System.out.println("4. Exit");
+
+            int choice = scan.nextInt();
+            scan.nextLine();
+            try{
+                switch (choice){
+                    case 1:
+                        System.out.print("\nPatient Data\n");
+
+                        break;
+                    case 2:
+                        System.out.println("Update Profile Data\n");
+                        break;
+                    case 3:
+                        System.out.println("Calculating life\n");
+                        run = false;
+                    case 4:
+                        System.out.println("Exiting....\n");
+                        run = false;
+                    default:
+                        System.out.println("Invalid choice. Please try again.\n");
                         break;
                 }
 
@@ -111,7 +158,7 @@ public class UserManager {
                         if (result.contains("ADMIN")) {
                             adminHome();
                         } else {
-                            System.out.println(result);
+                           patientHome();
                         }
                         break;
                         //completing registration

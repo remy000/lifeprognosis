@@ -18,9 +18,9 @@ public class UserManager {
 
     }
     //login
-    public static void login(String email, String password) throws Exception {
+    public static String login(String email, String password) throws Exception {
         //calling bash to login a user
-        executeBashCommand("bash","src/user_manager.sh", "login", email, password);
+        return executeBashCommand("bash","src/user_manager.sh", "login", email, password);
     }
 
     //function to execute commands for running bash
@@ -42,6 +42,45 @@ public class UserManager {
         System.out.println(output.toString());
         return output.toString();
     }
+
+    public static void adminHome(){
+        Scanner scan = new Scanner(System.in);
+        boolean run = true;
+        while (run) {
+            System.out.println("ADMIN HOMEPAGE");
+            System.out.println("\n============================\n");
+            System.out.println("Choose an option: ");
+            System.out.println("1. Initiate Registration");
+            System.out.println("2. Download Document");
+            System.out.println("3. Exit");
+
+            int choice = scan.nextInt();
+            scan.nextLine();
+            try{
+                switch (choice){
+                    case 1:
+                        System.out.print("Enter user email: ");
+                        String email = scan.nextLine();
+                        initiateRegistration(email);
+                        break;
+                    case 2:
+                        System.out.println("Downloading...");
+                        break;
+                    case 3:
+                        System.out.println("Existing...");
+                        run = false;
+                    default:
+                        System.out.println("Invalid choice. Please try again.");
+                        break;
+                }
+
+
+            }catch(Exception ex){
+                ex.printStackTrace();
+            }
+        }
+
+    }
    //main
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
@@ -50,9 +89,10 @@ public class UserManager {
             System.out.println("WELCOME TO PATIENT PROGNOSIS");
             System.out.println("\n============================\n\n");
             System.out.println("Choose an option: ");
-            System.out.println("1. Initiate Registration");
+            System.out.println("1. Login");
             System.out.println("2. Complete Registration");
-            System.out.println("3. Login");
+
+            System.out.println("3. exit");
 
             int choice = scanner.nextInt();
             scanner.nextLine();
@@ -60,11 +100,19 @@ public class UserManager {
             try {
                 //switch case for performing different functionalities
                 switch (choice) {
-                    //initiating registration
+                   //login
+
                     case 1:
-                        System.out.print("Enter user email: ");
-                        String email = scanner.nextLine();
-                        initiateRegistration(email);
+                        System.out.print("Enter email: ");
+                        String loginEmail = scanner.nextLine();
+                        System.out.print("Enter password: ");
+                        String loginPassword = scanner.nextLine();
+                        String result=login(loginEmail, loginPassword);
+                        if (result.contains("ADMIN")) {
+                            adminHome();
+                        } else {
+                            System.out.println(result);
+                        }
                         break;
                         //completing registration
                     case 2:
@@ -106,15 +154,8 @@ public class UserManager {
                         completeRegistration(uuid, patient);
                         break;
                         //login
-                    case 3:
-                        System.out.print("Enter email: ");
-                        String loginEmail = scanner.nextLine();
-                        System.out.print("Enter password: ");
-                        String loginPassword = scanner.nextLine();
-                        login(loginEmail, loginPassword);
 
-                        break;
-                    case 4:
+                    case 3:
                         System.out.println("Exiting the program...");
                         running = false;
                         break;

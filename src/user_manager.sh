@@ -29,8 +29,6 @@ function completeRegistration() {
   fi
    sed -i "/$uuid/s/$/,${firstname},${lastname},${dateOfBirth},${hivPositive},${diagnosisDate},${onArtDrugs},${artStartDate},${countryIso},${hashedPassword}/" $USER_STORE
    echo "registration completed."
-   echo "Hashed password during registration: $hashedPassword"
-    echo "$password"
 
 
 }

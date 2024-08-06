@@ -1,5 +1,6 @@
 #!/bin/bash
 USER_STORE="src/userstore.txt"
+SESSION_FILE="current_user.txt"
 function hashPassword() {
   echo -n "$1" | openssl dgst -sha256 | awk '{print $2}'
 }

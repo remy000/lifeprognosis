@@ -1,7 +1,5 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 public class UserManager {
@@ -19,7 +17,7 @@ public class UserManager {
     }
     //login
     public static String login(String email, String password) throws Exception {
-        //calling bash to login a user
+        //calling bash to log in a user
         return executeBashCommand("bash","src/user_manager.sh", "login", email, password);
     }
     public static void downloadUserStore(String targetDirectoryPath) throws Exception {
@@ -49,6 +47,7 @@ public class UserManager {
     public static void adminHome(){
         Scanner scan = new Scanner(System.in);
         boolean run = true;
+
         while (run) {
             System.out.println("ADMIN HOMEPAGE");
             System.out.println("\n============================\n");
@@ -132,6 +131,7 @@ public class UserManager {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         boolean running = true;
+        String email;
         while (running) {
             System.out.println("WELCOME TO PATIENT PROGNOSIS");
             System.out.println("\n============================\n\n");

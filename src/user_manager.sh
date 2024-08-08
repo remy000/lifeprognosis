@@ -25,7 +25,7 @@ function completeRegistration() {
       hashedPassword=$(hashPassword "$password")
   if ! grep -q "$uuid" $USER_STORE; then
     echo "Invalid UUID"
-    exit 1
+    return
   fi
    sed -i "/$uuid/s/$/,${firstName},${lastName},${dateOfBirth},${hivPositive},${diagnosisDate},${onArtDrugs},${artStartDate},${countryIso},${hashedPassword}/" $USER_STORE
    echo "registration completed."

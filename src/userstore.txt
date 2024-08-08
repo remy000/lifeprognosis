@@ -1,4 +1,5 @@
 admin@gmail.com,f28ac3fe-b39b-47c9-85d0-12ecb999cb85,ADMIN,Admin,Admin,2000-08-09,no,,no,,RWA,8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918
-remy@gmail.com,7ae687fe-987c-46ad-83a1-e6aa16581bef,PATIENT,Noel,Ishimwe,2000-08-06,no,yes,no,,RWA,f230fecccfc6eae2c3d3fea119b8bb157fd7e237e27ea7b43d04430e34ff6e46
+remy@gmail.com,7ae687fe-987c-46ad-83a1-e6aa16581bef,PATIENT,Noel,Ishimwe,2000-08-06,no,,no,,RWA,f230fecccfc6eae2c3d3fea119b8bb157fd7e237e27ea7b43d04430e34ff6e46
 pacifique@gmail.com,f9de89e3-26ea-4028-8472-b538e80fc1b4,PATIENT,Pacifique,Shema,2001-09-09,yes,2020-08-09,yes,2021-02-02,RWA,62131848425a911ca7ff0ac7b6a1de51553a1dfcb48be75dc36af1d8a08d652f
-didier@gmail.com,18f878e0-d6af-4b25-bd99-d9288b679a62,PATIENT,Abijuru,didier,1995-08-07,yes,2020-08-03,yes,2024-08-06,RWA,f4d776c2a0a1589c25c1a835630c2d7ba81ca6107d7aa69082520228c15af770
+didier@gmail.com,18f878e0-d6af-4b25-bd99-d9288b679a62,PATIENT,Abijuru,didier,1994-08-07,yes,2019-08-06,yes,2023-08-06,RWA,f4d776c2a0a1589c25c1a835630c2d7ba81ca6107d7aa69082520228c15af770
+aime@gmail.com,073b6284-00ef-46f9-8de3-fe86e131f401,PATIENT,aime,iradukunda,1991-08-08,no,NA,no,NA,RWA,325a09705c27432bf85b76a10299a939261363598cf52e1144f7b91e8e2f4448

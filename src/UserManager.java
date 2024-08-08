@@ -53,11 +53,6 @@ public class UserManager {
         args[2] = "updateProfile";
         args[3] = email;
         args[4] = String.valueOf(numOfColumns);
-        System.out.println("numOfColumns: " + numOfColumns);
-        System.out.println("Columns: " + Arrays.toString(columns));
-        System.out.println("New Values: " + Arrays.toString(newValues));
-        System.out.println("Args length: " + args.length);
-
         for (int i = 0; i < numOfColumns; i++) {
             args[5 + i * 2] = columns[i];
             args[6 + i * 2] = newValues[i];
@@ -201,10 +196,12 @@ public class UserManager {
                         String loginPassword = scanner.nextLine();
                         String result=login(loginEmail, loginPassword);
                         String[] parts=result.split(",");
-                        if (parts[3].contains("PATIENT")) {
-                            patientHome(loginEmail);
-                        } else{
-                            adminHome();
+                        if(parts.length>1) {
+                            if (parts[3].contains("PATIENT")) {
+                                patientHome(loginEmail);
+                            } else {
+                                adminHome();
+                            }
                         }
                         break;
                         //completing registration

@@ -57,7 +57,6 @@ public class UserManager {
             args[5 + i * 2] = columns[i];
             args[6 + i * 2] = newValues[i];
         }
-        System.out.println("Args: " + Arrays.toString(args)); // Print args array before executing the command
 
         executeBashCommand(args);
     }
@@ -111,6 +110,7 @@ public class UserManager {
                     case 3:
                         System.out.println("Existing...");
                         run = false;
+                        break;
                     default:
                         System.out.println("Invalid choice. Please try again.");
                         break;
@@ -143,7 +143,6 @@ public class UserManager {
                     case 1:
                         System.out.print("\nPatient Data\n");
                         System.out.print("===============\n");
-                        // Call the method to view profile data
                         viewProfile(email);
                         break;
                     case 2:
@@ -155,6 +154,7 @@ public class UserManager {
                     case 4:
                         System.out.println("Exiting....\n");
                         run = false;
+                        break;
                     default:
                         System.out.println("Invalid choice. Please try again.\n");
                         break;

@@ -97,15 +97,6 @@ function updateProfile() {
         shift 2
         if grep -q "$email" "$USER_STORE"; then
             userData=$(grep "$email" "$USER_STORE")
-            uuid=$(echo "$userData" | cut -d, -f2)
-            firstName=$(echo "$userData" | cut -d, -f4)
-            lastName=$(echo "$userData" | cut -d, -f5)
-            dateOfBirth=$(echo "$userData" | cut -d, -f6)
-            hivPositive=$(echo "$userData" | cut -d, -f7)
-            diagnosisDate=$(echo "$userData" | cut -d, -f8)
-            onArtDrugs=$(echo "$userData" | cut -d, -f9)
-            artStartDate=$(echo "$userData" | cut -d, -f10)
-            countryIso=$(echo "$userData" | cut -d, -f11)
             IFS=',' read -ra parts <<< "$userData"
 
             for ((i = 0; i < numOfColumns; i++)); do
@@ -113,15 +104,16 @@ function updateProfile() {
                 local newValue="$2"
                 shift 2
                 case "$column" in
-                    "firstName") firstName="$newValue" ;;
-                    "lastName") lastName="$newValue" ;;
-                    "dateOfBirth") dateOfBirth"$newValue" ;;
-                    "hivPositive") hivPositive"$newValue" ;;
-                    "diagnosisDate") diagnosisDate="$newValue" ;;
-                    "onArtDrugs") onArtDrugs="$newValue" ;;
+                    "firstName") parts[3]="$newValue" ;;
+                    "lastName") parts[4]="$newValue" ;;
+                    "dateOfBirth") parts[5]="$newValue" ;;
+                    "hivPositive") parts[6]="$newValue" ;;
+                    "diagnosisDate") parts[7]="$newValue" ;;
+                    "onArtDrugs") parts[8]="$newValue" ;;
                     "artStartDate") parts[9]="$newValue" ;;
                     "countryIso") parts[10]="$newValue" ;;
                     "password") parts[12]=$(hashPassword "$newValue") ;;
+
                     *) echo "Invalid column: $column" ;;
                 esac
             done

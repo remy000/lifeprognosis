@@ -47,6 +47,8 @@ function calculateLifespan() {
                 echo "Estimated lifespan: $yearsLeft years (not on ART drugs)"
             fi
         else
+
+
             echo "Estimated lifespan: $remainingYears years (not HIV positive)"
         fi
     else

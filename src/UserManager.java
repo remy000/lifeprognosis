@@ -21,8 +21,8 @@ public class UserManager {
         //calling bash to log in a user
         return executeBashCommand("bash","src/user_manager.sh", "login", email, password);
     }
-    public static void downloadUserStore(String targetDirectoryPath) throws Exception {
-        executeBashCommand("bash", "src/user_manager.sh", "downloadStore", targetDirectoryPath);
+    public static void downloadUserStore(String email) throws Exception {
+        executeBashCommand("bash", "src/report.sh", "exportUserData", email);
     }
     public static void viewProfile(String email) throws Exception {
          executeBashCommand("bash","src/user_manager.sh", "viewProfile", email);
@@ -83,7 +83,7 @@ public class UserManager {
         return output.toString();
     }
 
-    public static void adminHome(){
+    public static void adminHome(String email){
         Scanner scan = new Scanner(System.in);
         boolean run = true;
 
@@ -101,12 +101,11 @@ public class UserManager {
                 switch (choice){
                     case 1:
                         System.out.print("Enter user email: ");
-                        String email = scan.nextLine();
-                        initiateRegistration(email);
+                        String emails = scan.nextLine();
+                        initiateRegistration(emails);
                         break;
                     case 2:
-                        String path="C:/Users/STUDENT/Downloads/projectfiles";
-                        downloadUserStore(path);
+                        downloadUserStore(email);
 
                         break;
                     case 3:
@@ -200,7 +199,7 @@ public class UserManager {
                             if (parts[3].contains("PATIENT")) {
                                 patientHome(loginEmail);
                             } else {
-                                adminHome();
+                                adminHome(loginEmail);
                             }
                         }
                         break;
@@ -216,7 +215,7 @@ public class UserManager {
                         String dateOfBirth = scanner.nextLine();
                         System.out.print("HIV Positive (yes/no): ");
                         String hivPositive = scanner.nextLine();
-                        String diagnosisDate = "NA", onArtDrugs = "no", artStartDate = "NA";
+                        String diagnosisDate = "", onArtDrugs = "no", artStartDate = "";
                         if (hivPositive.equalsIgnoreCase("yes")) {
                             System.out.print("Diagnosis Date (YYYY-MM-DD): ");
                             diagnosisDate = scanner.nextLine();

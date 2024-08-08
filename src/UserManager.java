@@ -1,5 +1,6 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class UserManager {
@@ -23,6 +24,49 @@ public class UserManager {
     public static void downloadUserStore(String targetDirectoryPath) throws Exception {
         executeBashCommand("bash", "src/user_manager.sh", "downloadStore", targetDirectoryPath);
     }
+    public static void viewProfile(String email) throws Exception {
+         executeBashCommand("bash","src/user_manager.sh", "viewProfile", email);
+    }
+     public static void calculateLifeSpan(String email) throws Exception{
+         executeBashCommand("bash","src/lifeSpan.sh", "calculateLifespan", email);
+     }
+
+    public static void updateProfile(String email) throws Exception {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter the number of columns you want to update: ");
+        int numOfColumns = scanner.nextInt();
+        scanner.nextLine();
+
+        String[] columns = new String[numOfColumns];
+        String[] newValues = new String[numOfColumns];
+
+        for (int i = 0; i < numOfColumns; i++) {
+            System.out.print("Enter column name (firstName, lastName, dateOfBirth, hivPositive, diagnosisDate, onArtDrugs, artStartDate, countryIso, password): ");
+            columns[i] = scanner.nextLine();
+            System.out.print("Enter new value for " + columns[i] + ": ");
+            newValues[i] = scanner.nextLine();
+        }
+
+        String[] args = new String[5 + numOfColumns * 2];
+        args[0] = "bash";
+        args[1] = "src/user_manager.sh";
+        args[2] = "updateProfile";
+        args[3] = email;
+        args[4] = String.valueOf(numOfColumns);
+        System.out.println("numOfColumns: " + numOfColumns);
+        System.out.println("Columns: " + Arrays.toString(columns));
+        System.out.println("New Values: " + Arrays.toString(newValues));
+        System.out.println("Args length: " + args.length);
+
+        for (int i = 0; i < numOfColumns; i++) {
+            args[5 + i * 2] = columns[i];
+            args[6 + i * 2] = newValues[i];
+        }
+        System.out.println("Args: " + Arrays.toString(args)); // Print args array before executing the command
+
+        executeBashCommand(args);
+    }
+
 
     //function to execute commands for running bash
     private static String executeBashCommand(String... args) throws Exception {
@@ -86,16 +130,16 @@ public class UserManager {
 
     }
 
-    public static void patientHome(){
+    public static void patientHome(String email){
         Scanner scan = new Scanner(System.in);
         boolean run = true;
         while (run) {
-            System.out.println("PATIENT HOMEPAGE");
-            System.out.println("\n============================\n");
-            System.out.println("Choose an option: ");
+            System.out.println("\t\tPATIENT HOMEPAGE");
+            System.out.println("\t=======================\n");
+
             System.out.println("1. View Profile Data");
             System.out.println("2. Update Profile Data");
-            System.out.println("3. Calculate Life");
+            System.out.println("3. Calculate LifeSpan");
             System.out.println("4. Exit");
 
             int choice = scan.nextInt();
@@ -104,14 +148,16 @@ public class UserManager {
                 switch (choice){
                     case 1:
                         System.out.print("\nPatient Data\n");
-
+                        System.out.print("===============\n");
+                        // Call the method to view profile data
+                        viewProfile(email);
                         break;
                     case 2:
-                        System.out.println("Update Profile Data\n");
+                        updateProfile(email);
                         break;
                     case 3:
-                        System.out.println("Calculating life\n");
-                        run = false;
+                        calculateLifeSpan(email);
+                        break;
                     case 4:
                         System.out.println("Exiting....\n");
                         run = false;
@@ -131,15 +177,14 @@ public class UserManager {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         boolean running = true;
-        String email;
         while (running) {
-            System.out.println("WELCOME TO PATIENT PROGNOSIS");
-            System.out.println("\n============================\n\n");
-            System.out.println("Choose an option: ");
+            System.out.println("\n\t\tWELCOME TO PATIENT PROGNOSIS");
+            System.out.println("\t**************************************\n");
             System.out.println("1. Login");
             System.out.println("2. Complete Registration");
 
             System.out.println("3. exit");
+            System.out.println("Choose an option: ");
 
             int choice = scanner.nextInt();
             scanner.nextLine();
@@ -155,10 +200,11 @@ public class UserManager {
                         System.out.print("Enter password: ");
                         String loginPassword = scanner.nextLine();
                         String result=login(loginEmail, loginPassword);
-                        if (result.contains("ADMIN")) {
+                        String[] parts=result.split(",");
+                        if (parts[3].contains("PATIENT")) {
+                            patientHome(loginEmail);
+                        } else{
                             adminHome();
-                        } else {
-                           patientHome();
                         }
                         break;
                         //completing registration
@@ -173,7 +219,7 @@ public class UserManager {
                         String dateOfBirth = scanner.nextLine();
                         System.out.print("HIV Positive (yes/no): ");
                         String hivPositive = scanner.nextLine();
-                        String diagnosisDate = "", onArtDrugs = "no", artStartDate = "";
+                        String diagnosisDate = "NA", onArtDrugs = "no", artStartDate = "NA";
                         if (hivPositive.equalsIgnoreCase("yes")) {
                             System.out.print("Diagnosis Date (YYYY-MM-DD): ");
                             diagnosisDate = scanner.nextLine();

@@ -140,7 +140,8 @@ case $1 in
         initiateRegistration $2
         ;;
     "completeRegistration")
-        completeRegistration $2 $3 $4 $5 $6 $7 $8 $9 ${10}
+    shift
+        completeRegistration "$@"
         ;;
     "login")
         login $2 $3

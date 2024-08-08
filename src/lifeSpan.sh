@@ -22,20 +22,28 @@ function calculateLifespan() {
 
         birthYear=$(date -d "$birthDate" +"%Y")
         diagnosisYear=$(date -d "$diagnosisDate" +"%Y")
+        echo "diagnosis: $diagnosisYear"
         artStartYear=$(date -d "$artStartDate" +"%Y")
+        echo "start year: $artStartYear"
 
         currentYear=$(date +"%Y")
+        echo "current year: $currentYear"
         patientAge=$((currentYear - birthYear))
         yearsSinceDiagnosis=$((currentYear - diagnosisYear))
+        echo "$yearsSinceDiagnosis"
 
         lifeExpectancy=$(getLifeExpectancy "$countryIso")
         remainingYears=$((lifeExpectancy - patientAge))
-
+        echo "remaining: $remainingYears"
         if [[ "$hivPositive" == "yes" ]]; then
             # Calculate the remaining lifespan if the patient is HIV positive
             if [[ "$onArtDrugs" == "yes" ]]; then
                 delayYears=$((artStartYear - diagnosisYear))
-                adjustedLifespan=$((remainingYears * 90 / 100 ** delayYears))
+                echo "delays: $delayYears"
+               local adjustedLifespan=$remainingYears
+                          for ((i = 0; i < delayYears; i++)); do
+                             adjustedLifespan=$((adjustedLifespan * 90 / 100))
+                          done
                 echo "Estimated lifespan: $adjustedLifespan years"
             else
                 yearsLeft=$((5 - yearsSinceDiagnosis))

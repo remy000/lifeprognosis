@@ -112,7 +112,7 @@ function updateProfile() {
                     "onArtDrugs") parts[8]="$newValue" ;;
                     "artStartDate") parts[9]="$newValue" ;;
                     "countryIso") parts[10]="$newValue" ;;
-                    "password") parts[12]=$(hashPassword "$newValue") ;;
+                    "password") parts[11]=$(hashPassword "$newValue") ;;
 
                     *) echo "Invalid column: $column" ;;
                 esac

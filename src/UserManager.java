@@ -27,6 +27,9 @@ public class UserManager {
     public static void downloadUserStore(String email) throws Exception {
         executeBashCommand("bash", "src/report.sh", "exportUserData", email);
     }
+    public static void downloadPatientCalendar(String email) throws Exception {
+        executeBashCommand("bash", "src/report.sh", "exportCalendar", email);
+    }
     public static void viewProfile(String email) throws Exception {
          executeBashCommand("bash","src/user_manager.sh", "viewProfile", email);
     }
@@ -137,7 +140,8 @@ public class UserManager {
             System.out.println("1. View Profile Data");
             System.out.println("2. Update Profile Data");
             System.out.println("3. Calculate LifeSpan");
-            System.out.println("4. Exit");
+            System.out.println("4. Download iCalendar");
+            System.out.println("5. Exit");
 
             int choice = scan.nextInt();
             scan.nextLine();
@@ -155,7 +159,10 @@ public class UserManager {
                         calculateLifeSpan(email);
                         break;
                     case 4:
-                        System.out.println("Exiting....\n");
+                        downloadPatientCalendar(email);
+                        break;
+                    case 5:
+                        System.out.println("Exiting the system...");
                         run = false;
                         break;
                     default:

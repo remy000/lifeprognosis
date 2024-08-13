@@ -195,7 +195,9 @@ public class UserManager {
                         System.out.print("Enter email: ");
                         String loginEmail = scanner.nextLine();
                         System.out.print("Enter password: ");
-                        String loginPassword = scanner.nextLine();
+                        char[] loginPasswordArray = System.console().readPassword();
+                        String loginPassword = new String(loginPasswordArray);
+
                         String result=login(loginEmail, loginPassword);
                         String[] parts=result.split(",");
                         if(parts.length>1) {

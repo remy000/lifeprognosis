@@ -47,7 +47,7 @@ function login(){
           if [[ "$hashedPassword" == "$storedPassword" ]]; then
               echo "Login successful,$firstName,$lastName,$role"
           else
-              echo "Invalid credentials" 
+              echo "Invalid credentials"
           fi
       else
           echo "User not found"

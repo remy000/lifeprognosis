@@ -1,0 +1,12 @@
+email: remy@gmail.com
+UUID: 7ae687fe-987c-46ad-83a1-e6aa16581bef
+Role: PATIENT
+FirstName: Dukundane
+LastName: Remy
+DOB: 2000-08-06
+HIVStatus: no
+DiagnosisDate: 
+OnART: no
+ARTStartDate: 
+CountryISO: RWA
+-----------------------------------

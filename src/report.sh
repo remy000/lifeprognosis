@@ -1,6 +1,7 @@
 #!/bin/bash
 USER_STORE="src/userstore.txt"
 OUTPUT_FILE="src/patient_data.csv"
+CALENDAR="src/calendar.txt"
 function exportUserData() {
     local email="$1"
 
@@ -32,7 +33,7 @@ function exportUserData() {
     fi
 }
 # Call the function with the provided email
-exportUserData "$2"
+
 
 
 function exportCalendar() {
@@ -75,4 +76,15 @@ function exportCalendar() {
 }
 
 # Call the function with the provided email
-exportCalendar "$2"
+
+case "$1" in
+    exportCalendar)
+        exportCalendar "$2"
+        ;;
+    exportUserData)
+       exportUserData "$2"
+        ;;
+    *)
+        echo "Invalid command."
+        ;;
+esac

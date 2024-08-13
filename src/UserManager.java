@@ -36,44 +36,51 @@ public class UserManager {
          executeBashCommand("bash","src/lifeSpan.sh", "calculateLifespan", email);
      }
 
-    public static void updateProfile(String email) throws Exception {
+     public static void updateProfile(String email) throws Exception {
         Scanner scanner = new Scanner(System.in);
-
-        // Display all column names to the user
+    
         String[] allColumns = {"firstName", "lastName", "dateOfBirth", "hivPositive", "diagnosisDate",
                 "onArtDrugs", "artStartDate", "countryIso", "password"};
-        System.out.println("Available columns for update:");
-        for (String column : allColumns) {
-            System.out.println("- " + column);
+        
+        boolean moreUpdates = true;
+        
+        while (moreUpdates) {
+            System.out.println("Available fields for update:");
+            System.out.println("****************************\n");
+            for (int i = 0; i < allColumns.length; i++) {
+                System.out.println((i + 1) + ". " + allColumns[i]);
+            }
+    
+            System.out.print("choose the field you want to update: ");
+            int columnChoice = scanner.nextInt();
+            scanner.nextLine();  // Consume the newline
+    
+            if (columnChoice < 1 || columnChoice > allColumns.length) {
+                System.out.println("Invalid choice. Please select a valid field number.");
+                continue;
+            }
+    
+            String columnToUpdate = allColumns[columnChoice - 1];
+            System.out.print("Enter new value for " + columnToUpdate + ": ");
+            String newValue = scanner.nextLine();
+    
+            String[] args = new String[7];
+            args[0] = "bash";
+            args[1] = "src/user_manager.sh";
+            args[2] = "updateProfile";
+            args[3] = email;
+            args[4] = "1";  // We are updating one column at a time
+            args[5] = columnToUpdate;
+            args[6] = newValue;
+    
+            executeBashCommand(args);
+    
+            System.out.print("Do you want to update more field? (yes/no): ");
+            String response = scanner.nextLine();
+            moreUpdates = response.equalsIgnoreCase("yes");
         }
-
-        System.out.print("Enter the number of columns you want to update: ");
-        int numOfColumns = scanner.nextInt();
-        scanner.nextLine();
-
-        String[] columns = new String[numOfColumns];
-        String[] newValues = new String[numOfColumns];
-
-        for (int i = 0; i < numOfColumns; i++) {
-            System.out.print("Enter column name to update: ");
-            columns[i] = scanner.nextLine();
-            System.out.print("Enter new value for " + columns[i] + ": ");
-            newValues[i] = scanner.nextLine();
-        }
-
-        String[] args = new String[5 + numOfColumns * 2];
-        args[0] = "bash";
-        args[1] = "src/user_manager.sh";
-        args[2] = "updateProfile";
-        args[3] = email;
-        args[4] = String.valueOf(numOfColumns);
-        for (int i = 0; i < numOfColumns; i++) {
-            args[5 + i * 2] = columns[i];
-            args[6 + i * 2] = newValues[i];
-        }
-
-        executeBashCommand(args);
     }
+    
     //function to execute commands for running bash
     private static String executeBashCommand(String... args) throws Exception {
         ProcessBuilder pb = new ProcessBuilder(args);

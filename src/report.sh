@@ -33,3 +33,46 @@ function exportUserData() {
 }
 # Call the function with the provided email
 exportUserData "$2"
+
+
+function exportCalendar() {
+    local email="$1"
+    echo "Starting calendar export for $email"
+    if grep -q "$email" "$USER_STORE"; then
+        userData=$(grep "$email" "$USER_STORE")
+        role=$(echo "$userData" | cut -d, -f3)
+        echo "User role: $role"
+        if [[ "$role" == "PATIENT" ]]; then
+            echo "Exporting calendar data for patient..."
+            if [ -f "$CALENDAR" ] && [ ! -w "$CALENDAR" ]; then
+                echo "Error: No write permission for $CALENDAR."
+                return 1
+            fi
+            echo "$userData" | awk -F, '
+                $3 == "PATIENT" {
+                    print "email: "$1
+                    print "UUID: "$2
+                    print "Role: "$3
+                    print "FirstName: "$4
+                    print "LastName: "$5
+                    print "DOB: "$6
+                    print "HIVStatus: "$7
+                    print "DiagnosisDate: "$8
+                    print "OnART: "$9
+                    print "ARTStartDate: "$10
+                    print "CountryISO: "$11
+                    print "-----------------------------------"
+                }
+            ' > "$CALENDAR"
+
+            echo "Calendar data exported successfully to $CALENDAR"
+        else
+            echo "Access denied: Only patients can export their calendar data."
+        fi
+    else
+        echo "User not found."
+    fi
+}
+
+# Call the function with the provided email
+exportCalendar "$2"

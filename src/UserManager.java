@@ -36,14 +36,7 @@ public class UserManager {
 
     public static void updateProfile(String email) throws Exception {
         Scanner scanner = new Scanner(System.in);
-        String[] allColumns = {"firstName", "lastName", "dateOfBirth", "hivPositive", "diagnosisDate",
-                "onArtDrugs", "artStartDate", "countryIso", "password"};
-        System.out.println("Available fields for update:");
-        for (String column : allColumns) {
-            System.out.println("- " + column);
-        }
-
-        System.out.print("Enter the number of fields you want to update: ");
+        System.out.print("Enter the number of columns you want to update: ");
         int numOfColumns = scanner.nextInt();
         scanner.nextLine();
 
@@ -51,7 +44,7 @@ public class UserManager {
         String[] newValues = new String[numOfColumns];
 
         for (int i = 0; i < numOfColumns; i++) {
-            System.out.print("Enter field name to update: ");
+            System.out.print("Enter column name (firstName, lastName, dateOfBirth, hivPositive, diagnosisDate, onArtDrugs, artStartDate, countryIso, password): ");
             columns[i] = scanner.nextLine();
             System.out.print("Enter new value for " + columns[i] + ": ");
             newValues[i] = scanner.nextLine();
@@ -70,8 +63,6 @@ public class UserManager {
 
         executeBashCommand(args);
     }
-
-
 
 
     //function to execute commands for running bash
@@ -204,7 +195,9 @@ public class UserManager {
                         System.out.print("Enter email: ");
                         String loginEmail = scanner.nextLine();
                         System.out.print("Enter password: ");
-                        String loginPassword = scanner.nextLine();
+                        char[] loginPasswordArray = System.console().readPassword();
+                        String loginPassword = new String(loginPasswordArray);
+
                         String result=login(loginEmail, loginPassword);
                         String[] parts=result.split(",");
                         if(parts.length>1) {

@@ -5,10 +5,19 @@ function hashPassword() {
 }
 function initiateRegistration() {
      local email="$1"
-      uuid=$(uuidgen)
-      role="PATIENT"
-     echo "$email,$uuid,$role" >> $USER_STORE
-     echo "registration initiation completed. UUID: $uuid"
+
+         # Check if the email already exists in the userstore
+         if grep -q "$email" "$USER_STORE"; then
+             echo "The email $email is already taken."
+             exit 1
+         else
+             # Proceed with the registration process
+             uuid=$(uuidgen)
+                  role="PATIENT"
+                 echo "$email,$uuid,$role" >> $USER_STORE
+                 echo "registration initiation completed. UUID: $uuid"
+         fi
+
 }
 
 function completeRegistration() {
@@ -86,44 +95,39 @@ function viewProfile() {
        fi
 }
 
-
-function downloadStore(){
-  echo "hello"
-}
-
 function updateProfile() {
-     local email="$1"
-        local numOfColumns="$2"
-        shift 2
-        if grep -q "$email" "$USER_STORE"; then
-            userData=$(grep "$email" "$USER_STORE")
-            IFS=',' read -ra parts <<< "$userData"
+    local email="$1"
+    local numOfColumns="$2"
+    shift 2
 
-            for ((i = 0; i < numOfColumns; i++)); do
-                local column="$1"
-                local newValue="$2"
-                shift 2
-                case "$column" in
-                    "firstName") parts[3]="$newValue" ;;
-                    "lastName") parts[4]="$newValue" ;;
-                    "dateOfBirth") parts[5]="$newValue" ;;
-                    "hivPositive") parts[6]="$newValue" ;;
-                    "diagnosisDate") parts[7]="$newValue" ;;
-                    "onArtDrugs") parts[8]="$newValue" ;;
-                    "artStartDate") parts[9]="$newValue" ;;
-                    "countryIso") parts[10]="$newValue" ;;
-                    "password") parts[11]=$(hashPassword "$newValue") ;;
+    if grep -q "$email" "$USER_STORE"; then
+        userData=$(grep "$email" "$USER_STORE")
+        IFS=',' read -ra parts <<< "$userData"
 
-                    *) echo "Invalid column: $column" ;;
-                esac
-            done
+        for ((i = 0; i < numOfColumns; i++)); do
+            local column="$1"
+            local newValue="$2"
+            shift 2
+            case "$column" in
+                "firstName") parts[3]="$newValue" ;;
+                "lastName") parts[4]="$newValue" ;;
+                "dateOfBirth") parts[5]="$newValue" ;;
+                "hivPositive") parts[6]="$newValue" ;;
+                "diagnosisDate") parts[7]="$newValue" ;;
+                "onArtDrugs") parts[8]="$newValue" ;;
+                "artStartDate") parts[9]="$newValue" ;;
+                "countryIso") parts[10]="$newValue" ;;
+                "password") parts[11]=$(hashPassword "$newValue") ;;
+                *) echo "Invalid column: $column" ;;
+            esac
+        done
 
-            newUserData=$(IFS=','; echo "${parts[*]}")
-            sed -i "/$email/c\\$newUserData" "$USER_STORE"
-            echo "Profile updated successfully"
-        else
-            echo "User not found"
-        fi
+        newUserData=$(IFS=','; echo "${parts[*]}")
+        sed -i "/$email/c\\$newUserData" "$USER_STORE"
+        echo "Profile updated successfully"
+    else
+        echo "User not found"
+    fi
 }
 
 
@@ -141,11 +145,12 @@ case $1 in
     "viewProfile")
               viewProfile "$2"
                ;;
+
     "updateProfile")
     shift
            updateProfile "$@"
            ;;
     *)
-        echo "Usage: $0 {initiateRegistration|completeRegistration|login|}"
+        echo "Usage: $0 {initiateRegistration|completeRegistration|login|viewProfile|updateProfile}"
         ;;
 esac

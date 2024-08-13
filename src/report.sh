@@ -1,10 +1,9 @@
 #!/bin/bash
 USER_STORE="src/userstore.txt"
 OUTPUT_FILE="src/patient_data.csv"
-
 function exportUserData() {
     local email="$1"
-    # Check if the role is "ADMIN"
+
      if grep -q "$email" "$USER_STORE"; then
        userData=$(grep "$email" "$USER_STORE")
        role=$(echo "$userData" | cut -d, -f3)
@@ -32,6 +31,5 @@ function exportUserData() {
       echo "Access denied: Only admin can export user data."
     fi
 }
-
 # Call the function with the provided email
 exportUserData "$2"

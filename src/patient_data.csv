@@ -2,4 +2,5 @@ email,UUID,Role,FirstName,LastName,DOB,HIVStatus,DiagnosisDate,OnART,ARTStartDat
 remy@gmail.com,7ae687fe-987c-46ad-83a1-e6aa16581bef,PATIENT,Dukundane,Remy,2000-08-06,no,N/A,no,N/A,RWA
 pacifique@gmail.com,f9de89e3-26ea-4028-8472-b538e80fc1b4,PATIENT,Pacifique,Shema,2001-09-09,yes,2020-08-09,yes,2021-02-02,RWA
 didier@gmail.com,18f878e0-d6af-4b25-bd99-d9288b679a62,PATIENT,Abijuru,didier,1994-08-07,yes,2019-08-06,yes,2023-08-06,RWA
-stephen@gmail.com,d6e7cb2b-fc9b-44f5-b02c-462239a5fd3e,PATIENT,,,,,N/A,,N/A,
+stephen@gmail.com,d6e7cb2b-fc9b-44f5-b02c-462239a5fd3e,PATIENT,Remy,Dukundane,2002-08-08,yes,2020-09-09,yes,2021-08-08,RWA
+olivier@gmail.com,634ea27b-78c4-4709-9346-7aa3c4b0a506,PATIENT,olivier,Kwizera,2002-09-09,yes,2022-09-09,no,N/A,RWA

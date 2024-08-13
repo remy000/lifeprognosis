@@ -3,7 +3,6 @@ import java.io.InputStreamReader;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class UserManager {
@@ -36,6 +35,15 @@ public class UserManager {
 
     public static void updateProfile(String email) throws Exception {
         Scanner scanner = new Scanner(System.in);
+
+        // Display all column names to the user
+        String[] allColumns = {"firstName", "lastName", "dateOfBirth", "hivPositive", "diagnosisDate",
+                "onArtDrugs", "artStartDate", "countryIso", "password"};
+        System.out.println("Available columns for update:");
+        for (String column : allColumns) {
+            System.out.println("- " + column);
+        }
+
         System.out.print("Enter the number of columns you want to update: ");
         int numOfColumns = scanner.nextInt();
         scanner.nextLine();
@@ -44,7 +52,7 @@ public class UserManager {
         String[] newValues = new String[numOfColumns];
 
         for (int i = 0; i < numOfColumns; i++) {
-            System.out.print("Enter column name (firstName, lastName, dateOfBirth, hivPositive, diagnosisDate, onArtDrugs, artStartDate, countryIso, password): ");
+            System.out.print("Enter column name to update: ");
             columns[i] = scanner.nextLine();
             System.out.print("Enter new value for " + columns[i] + ": ");
             newValues[i] = scanner.nextLine();
@@ -63,8 +71,6 @@ public class UserManager {
 
         executeBashCommand(args);
     }
-
-
     //function to execute commands for running bash
     private static String executeBashCommand(String... args) throws Exception {
         ProcessBuilder pb = new ProcessBuilder(args);

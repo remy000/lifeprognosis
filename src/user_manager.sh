@@ -94,7 +94,6 @@ function viewProfile() {
            echo "User not found"
        fi
 }
-
 function updateProfile() {
     local email="$1"
     local numOfColumns="$2"

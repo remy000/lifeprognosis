@@ -1,5 +1,8 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Arrays;
 import java.util.Scanner;
 
@@ -211,19 +214,43 @@ public class UserManager {
                         String firstName = scanner.nextLine();
                         System.out.print("Last Name: ");
                         String lastName = scanner.nextLine();
-                        System.out.print("Date of Birth (YYYY-MM-DD): ");
-                        String dateOfBirth = scanner.nextLine();
+                        String dateOfBirth = "";
+                        while (true) {
+                            System.out.print("Date of Birth (YYYY-MM-DD): ");
+                            dateOfBirth = scanner.nextLine();
+                            if (isValidDate(dateOfBirth) && !isFutureDate(dateOfBirth)) {
+                                break;
+                            } else {
+                                System.out.println("Invalid Date of Birth. It can't be in the future.");
+                            }
+                        }
+
                         System.out.print("HIV Positive (yes/no): ");
                         String hivPositive = scanner.nextLine();
                         String diagnosisDate = "", onArtDrugs = "no", artStartDate = "";
                         if (hivPositive.equalsIgnoreCase("yes")) {
-                            System.out.print("Diagnosis Date (YYYY-MM-DD): ");
-                            diagnosisDate = scanner.nextLine();
+                            while (true) {
+                                System.out.print("Diagnosis Date (YYYY-MM-DD): ");
+                                diagnosisDate = scanner.nextLine();
+                                if (isValidDate(diagnosisDate) && !isFutureDate(diagnosisDate)) {
+                                    break;
+                                } else {
+                                    System.out.println("Invalid Diagnosis Date. It can't be in the future.");
+                                }
+                            }
+
                             System.out.print("On ART Drugs (yes/no): ");
                             onArtDrugs = scanner.nextLine();
                             if (onArtDrugs.equalsIgnoreCase("yes")) {
-                                System.out.print("ART Start Date (YYYY-MM-DD): ");
-                                artStartDate = scanner.nextLine();
+                                while (true) {
+                                    System.out.print("ART Start Date (YYYY-MM-DD): ");
+                                    artStartDate = scanner.nextLine();
+                                    if (isValidDate(artStartDate) && !isFutureDate(artStartDate) && isAfter(diagnosisDate, artStartDate)) {
+                                        break;
+                                    } else {
+                                        System.out.println("Invalid ART Start Date. It must be after the Diagnosis Date and not in the future.");
+                                    }
+                                }
                             }
                         }
                         System.out.print("Country of Residence (ISO Code): ");
@@ -260,5 +287,26 @@ public class UserManager {
 
             scanner.close();
         }
+    private static boolean isValidDate(String dateStr) {
+        try {
+            LocalDate.parse(dateStr, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            return true;
+        } catch (DateTimeParseException e) {
+            return false;
+        }
+    }
+
+    // Check if the date is in the future
+    private static boolean isFutureDate(String dateStr) {
+        LocalDate date = LocalDate.parse(dateStr, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        return date.isAfter(LocalDate.now());
+    }
+
+    // Check if artStartDate is after diagnosisDate
+    private static boolean isAfter(String diagnosisDateStr, String artStartDateStr) {
+        LocalDate diagnosisDate = LocalDate.parse(diagnosisDateStr, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        LocalDate artStartDate = LocalDate.parse(artStartDateStr, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        return artStartDate.isAfter(diagnosisDate);
+    }
 
 }
